@@ -188,29 +188,34 @@ app.post('/api/analyze', async (req, res) => {
 app.get('/api/export', (req, res) => {
   const data = loadData();
   const rows = data.map(d => ({
-    'Instagram URL': d.url || '',
     '아이디': d.username || '',
     '표시명': d.displayName || '',
-    '팔로워 수': d.followers || '',
     '이메일': d.email || '',
-    '프로필 소개글': d.bio || '',
-    '콘텐츠 유형': d.contentType || '',
-    '릴스 중심': d.isReelsFocused ? '✅' : '❌',
-    '최근 활동': d.isRecentlyActive ? '✅' : '❌',
-    '컨택 여부': d.contacted || '',
-    '컨택 방식': d.contactMethod || '',
-    '분석일': d.analyzedAt || '',
   }));
 
   const wb = XLSX.utils.book_new();
   const ws = XLSX.utils.json_to_sheet(rows);
+
+  // 열 너비 설정
   ws['!cols'] = [
-    {wch:35},{wch:15},{wch:15},{wch:10},
-    {wch:25},{wch:30},{wch:12},{wch:8},
-    {wch:8},{wch:8},{wch:12},{wch:12},
+    { wch: 20 },
+    { wch: 20 },
+    { wch: 30 },
   ];
+
+  // 모든 셀 폰트 사이즈 9pt 설정
+  const range = XLSX.utils.decode_range(ws['!ref']);
+  for (let R = range.s.r; R <= range.e.r; R++) {
+    for (let C = range.s.c; C <= range.e.c; C++) {
+      const cellRef = XLSX.utils.encode_cell({ r: R, c: C });
+      if (!ws[cellRef]) continue;
+      if (!ws[cellRef].s) ws[cellRef].s = {};
+      ws[cellRef].s.font = { sz: 9 };
+    }
+  }
+
   XLSX.utils.book_append_sheet(wb, ws, '인플루언서 목록');
-  const buffer = XLSX.write(wb, { type: 'buffer', bookType: 'xlsx' });
+  const buffer = XLSX.write(wb, { type: 'buffer', bookType: 'xlsx', cellStyles: true });
 
   res.setHeader('Content-Disposition', 'attachment; filename=influencers.xlsx');
   res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');

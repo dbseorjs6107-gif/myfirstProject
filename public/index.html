@@ -104,14 +104,7 @@ https://www.instagram.com/example3/"></textarea>
           <th>Instagram URL</th>
           <th>아이디</th>
           <th>표시명</th>
-          <th>팔로워</th>
           <th>이메일</th>
-          <th>소개글</th>
-          <th>콘텐츠 유형</th>
-          <th>릴스</th>
-          <th>최근활동</th>
-          <th>분석일</th>
-          <th>신뢰도</th>
           <th></th>
         </tr>
       </thead>
@@ -167,14 +160,7 @@ https://www.instagram.com/example3/"></textarea>
         <td class="url-cell"><a href="${d.url}" target="_blank">${d.url}</a></td>
         <td>@${d.username || ''}</td>
         <td>${d.displayName || ''}</td>
-        <td>${d.followers || ''}</td>
         <td>${d.email || '-'}</td>
-        <td class="bio-cell" title="${d.bio || ''}">${d.bio || '-'}</td>
-        <td><span class="tag ${tagClass[d.contentType] || 'tag-mixed'}">${d.contentType || '-'}</span></td>
-        <td style="text-align:center">${d.isReelsFocused ? '✅' : '❌'}</td>
-        <td style="text-align:center">${d.isRecentlyActive ? '✅' : '❌'}</td>
-        <td>${d.analyzedAt || ''}</td>
-        <td class="confidence-${d.confidence}">${d.confidence || ''}</td>
         <td><button class="del-btn" onclick="deleteRow('${d.username}')">🗑</button></td>
       </tr>
     `).join('');
