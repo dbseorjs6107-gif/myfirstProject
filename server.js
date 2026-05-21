@@ -2,6 +2,7 @@ const express = require('express');
 const { chromium } = require('playwright');
 const fs = require('fs');
 const XLSX = require('xlsx');
+require('dotenv').config();
 
 const app = express();
 app.use(express.json());
@@ -9,7 +10,7 @@ app.use(express.static('public'));
 
 const DATA_FILE = 'data.json';
 const SESSION_DIR = 'instagram_session';
-const GEMINI_API_KEY = 'AIzaSyC0VNfN20fEotk1XEE3LRaU_sTXibx238g';
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
 function loadData() {
   if (fs.existsSync(DATA_FILE)) return JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
