@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>인플루언서 리서치 툴</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', sans-serif; background: #f5f7fa; color: #333; }
+  .header { background: #1a1a2e; color: white; padding: 20px 30px; display: flex; align-items: center; justify-content: space-between; }
+  .header h1 { font-size: 20px; font-weight: 600; }
+  .header span { font-size: 13px; opacity: 0.6; }
+  .container { max-width: 1400px; margin: 0 auto; padding: 24px; }
+  .input-box { background: white; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+  .input-box label { font-size: 13px; font-weight: 600; color: #555; display: block; margin-bottom: 8px; }
+  .input-box textarea { width: 100%; height: 120px; padding: 12px 16px; border: 1.5px solid #e0e0e0; border-radius: 8px; font-size: 13px; outline: none; resize: vertical; line-height: 1.8; transition: border-color 0.2s; font-family: 'Segoe UI', sans-serif; }
+  .input-box textarea:focus { border-color: #1a1a2e; }
+  .input-row { display: flex; align-items: center; justify-content: space-between; margin-top: 12px; }
+  .url-count { font-size: 13px; color: #888; }
+  .url-count span { font-weight: 700; color: #1a1a2e; }
+  .btn { padding: 12px 24px; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+  .btn-primary { background: #1a1a2e; color: white; }
+  .btn-primary:hover { background: #2d2d4e; }
+  .btn-primary:disabled { background: #999; cursor: not-allowed; }
+  .btn-export { background: #16a34a; color: white; }
+  .btn-export:hover { background: #15803d; }
+  .btn-danger { background: none; border: 1px solid #e0e0e0; color: #999; font-size: 12px; padding: 8px 14px; }
+  .btn-danger:hover { border-color: #ef4444; color: #ef4444; }
+  .toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  .toolbar-left { display: flex; align-items: center; gap: 12px; }
+  .count { font-size: 13px; color: #666; }
+  .status-msg { padding: 12px 16px; border-radius: 8px; font-size: 13px; margin-bottom: 12px; display: none; }
+  .status-msg.loading { background: #eff6ff; color: #1d4ed8; display: block; }
+  .status-msg.error { background: #fef2f2; color: #dc2626; display: block; }
+  .status-msg.success { background: #f0fdf4; color: #16a34a; display: block; }
+  .progress-bar { width: 100%; height: 4px; background: #e0e0e0; border-radius: 2px; margin-top: 8px; display: none; }
+  .progress-bar.show { display: block; }
+  .progress-fill { height: 100%; background: #1a1a2e; border-radius: 2px; transition: width 0.3s; }
+  .table-wrap { background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); overflow: hidden; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  thead tr { background: #1a1a2e; color: white; }
+  thead th { padding: 12px 14px; text-align: left; font-weight: 500; white-space: nowrap; }
+  tbody tr { border-bottom: 1px solid #f0f0f0; transition: background 0.15s; }
+  tbody tr:hover { background: #f9f9ff; }
+  tbody td { padding: 11px 14px; vertical-align: middle; }
+  .tag { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+  .tag-makeup { background: #fce7f3; color: #be185d; }
+  .tag-skincare { background: #d1fae5; color: #065f46; }
+  .tag-hair { background: #dbeafe; color: #1e40af; }
+  .tag-lifestyle { background: #fef3c7; color: #92400e; }
+  .tag-fashion { background: #ede9fe; color: #5b21b6; }
+  .tag-nail { background: #ffedd5; color: #9a3412; }
+  .tag-mixed { background: #f1f5f9; color: #475569; }
+  .url-cell { max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .url-cell a { color: #1a1a2e; text-decoration: none; }
+  .url-cell a:hover { text-decoration: underline; }
+  .bio-cell { max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #666; }
+  .del-btn { background: none; border: none; color: #ccc; cursor: pointer; font-size: 16px; padding: 4px 8px; border-radius: 4px; }
+  .del-btn:hover { color: #ef4444; background: #fef2f2; }
+  .empty { text-align: center; padding: 60px; color: #aaa; }
+  .empty p { font-size: 15px; margin-top: 8px; }
+  .confidence-high { color: #16a34a; font-weight: 600; }
+  .confidence-medium { color: #d97706; font-weight: 600; }
+  .confidence-low { color: #dc2626; font-weight: 600; }
+  .analyzing-row td { background: #fffbeb; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>📊 인플루언서 리서치 툴</h1>
+  <span>뷰티 마케팅 자동화</span>
+</div>
+
+<div class="container">
+  <div class="input-box">
+    <label>Instagram URL 입력 (여러 개는 줄바꿈으로 구분)</label>
+    <textarea id="urlInput" placeholder="https://www.instagram.com/example1/
+https://www.instagram.com/example2/
+https://www.instagram.com/example3/"></textarea>
+    <div class="input-row">
+      <span class="url-count">감지된 URL: <span id="urlCountNum">0</span>개</span>
+      <button class="btn btn-primary" id="analyzeBtn" onclick="analyze()">▶ 분석 시작</button>
+    </div>
+    <div class="progress-bar" id="progressBar">
+      <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+    </div>
+  </div>
+
+  <div id="statusMsg" class="status-msg"></div>
+
+  <div class="toolbar">
+    <div class="toolbar-left">
+      <span class="count" id="countText">총 0개</span>
+      <button class="btn btn-danger" onclick="resetSession()">🔄 로그인 세션 초기화</button>
+    </div>
+    <button class="btn btn-export" onclick="exportExcel()">⬇ 엑셀 다운로드</button>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Instagram URL</th>
+          <th>아이디</th>
+          <th>표시명</th>
+          <th>팔로워</th>
+          <th>이메일</th>
+          <th>소개글</th>
+          <th>콘텐츠 유형</th>
+          <th>릴스</th>
+          <th>최근활동</th>
+          <th>분석일</th>
+          <th>신뢰도</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+    <div class="empty" id="emptyMsg">
+      <div style="font-size:40px">🔍</div>
+      <p>Instagram URL을 입력하고 분석을 시작하세요</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  let allData = [];
+
+  const tagClass = {
+    '메이크업': 'tag-makeup', '스킨케어': 'tag-skincare', '헤어': 'tag-hair',
+    '라이프스타일': 'tag-lifestyle', '패션': 'tag-fashion', '네일': 'tag-nail', '혼합': 'tag-mixed'
+  };
+
+  // URL 개수 실시간 감지
+  document.getElementById('urlInput').addEventListener('input', function() {
+    const urls = parseUrls(this.value);
+    document.getElementById('urlCountNum').textContent = urls.length;
+  });
+
+  function parseUrls(text) {
+    return text.split('\n')
+      .map(u => u.trim())
+      .filter(u => u.includes('instagram.com'));
+  }
+
+  async function loadData() {
+    const res = await fetch('/api/data');
+    allData = await res.json();
+    renderTable();
+  }
+
+  function renderTable() {
+    const tbody = document.getElementById('tableBody');
+    const empty = document.getElementById('emptyMsg');
+    document.getElementById('countText').textContent = `총 ${allData.length}개`;
+
+    if (allData.length === 0) {
+      tbody.innerHTML = '';
+      empty.style.display = 'block';
+      return;
+    }
+    empty.style.display = 'none';
+
+    tbody.innerHTML = allData.map(d => `
+      <tr>
+        <td class="url-cell"><a href="${d.url}" target="_blank">${d.url}</a></td>
+        <td>@${d.username || ''}</td>
+        <td>${d.displayName || ''}</td>
+        <td>${d.followers || ''}</td>
+        <td>${d.email || '-'}</td>
+        <td class="bio-cell" title="${d.bio || ''}">${d.bio || '-'}</td>
+        <td><span class="tag ${tagClass[d.contentType] || 'tag-mixed'}">${d.contentType || '-'}</span></td>
+        <td style="text-align:center">${d.isReelsFocused ? '✅' : '❌'}</td>
+        <td style="text-align:center">${d.isRecentlyActive ? '✅' : '❌'}</td>
+        <td>${d.analyzedAt || ''}</td>
+        <td class="confidence-${d.confidence}">${d.confidence || ''}</td>
+        <td><button class="del-btn" onclick="deleteRow('${d.username}')">🗑</button></td>
+      </tr>
+    `).join('');
+  }
+
+  async function analyze() {
+    const text = document.getElementById('urlInput').value;
+    const urls = parseUrls(text);
+
+    if (urls.length === 0) return showStatus('올바른 Instagram URL을 입력해주세요', 'error');
+
+    const btn = document.getElementById('analyzeBtn');
+    btn.disabled = true;
+
+    const progressBar = document.getElementById('progressBar');
+    const progressFill = document.getElementById('progressFill');
+    progressBar.classList.add('show');
+    progressFill.style.width = '0%';
+
+    showStatus(`⏳ ${urls.length}개 URL 분석 중... 브라우저 창이 자동으로 열립니다. 로그인이 필요하면 로그인해주세요.`, 'loading');
+
+    try {
+      const res = await fetch('/api/analyze', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ urls })
+      });
+      const result = await res.json();
+
+      progressFill.style.width = '100%';
+      await loadData();
+
+      const successCount = result.results?.length || 0;
+      const errorCount = result.errors?.length || 0;
+
+      if (errorCount > 0) {
+        const errorMsgs = result.errors.map(e => `${e.url}: ${e.error}`).join('\n');
+        showStatus(`✅ ${successCount}개 완료 / ❌ ${errorCount}개 실패\n${errorMsgs}`, errorCount > 0 && successCount === 0 ? 'error' : 'success');
+      } else {
+        showStatus(`✅ ${successCount}개 분석 완료!`, 'success');
+        document.getElementById('urlInput').value = '';
+        document.getElementById('urlCountNum').textContent = '0';
+        setTimeout(() => hideStatus(), 4000);
+      }
+    } catch (err) {
+      showStatus('❌ 오류: ' + err.message, 'error');
+    } finally {
+      btn.disabled = false;
+      progressBar.classList.remove('show');
+      progressFill.style.width = '0%';
+    }
+  }
+
+  async function deleteRow(username) {
+    if (!confirm('삭제하겠습니까?')) return;
+    await fetch('/api/data/' + username, { method: 'DELETE' });
+    await loadData();
+  }
+
+  async function resetSession() {
+    if (!confirm('로그인 세션을 초기화하면 다음 분석 시 다시 로그인해야 합니다. 계속하겠습니까?')) return;
+    await fetch('/api/reset-session', { method: 'POST' });
+    showStatus('🔄 세션 초기화 완료. 다음 분석 시 Instagram 로그인이 필요합니다.', 'success');
+    setTimeout(() => hideStatus(), 4000);
+  }
+
+  function exportExcel() {
+    window.location.href = '/api/export';
+  }
+
+  function showStatus(msg, type) {
+    const el = document.getElementById('statusMsg');
+    el.textContent = msg;
+    el.className = 'status-msg ' + type;
+  }
+
+  function hideStatus() {
+    document.getElementById('statusMsg').className = 'status-msg';
+  }
+
+  loadData();
+</script>
+</body>
+</html>

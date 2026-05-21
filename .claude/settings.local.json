@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(Get-Process *)",
+      "PowerShell($r = Invoke-WebRequest -Uri \"http://localhost:3000/api/data\" -UseBasicParsing; Write-Host \"HTTP 상태:\", $r.StatusCode; Write-Host \"응답:\", $r.Content)"
+    ]
+  }
+}
