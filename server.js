@@ -229,6 +229,11 @@ app.delete('/api/data/:username', (req, res) => {
   res.json({ success: true });
 });
 
+app.delete('/api/data', (req, res) => {
+  saveData([]);
+  res.json({ success: true });
+});
+
 app.post('/api/reset-session', (req, res) => {
   if (fs.existsSync(SESSION_DIR)) {
     fs.rmSync(SESSION_DIR, { recursive: true });

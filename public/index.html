@@ -93,6 +93,7 @@ https://www.instagram.com/example3/"></textarea>
     <div class="toolbar-left">
       <span class="count" id="countText">총 0개</span>
       <button class="btn btn-danger" onclick="resetSession()">🔄 로그인 세션 초기화</button>
+      <button class="btn btn-danger" onclick="deleteAll()" style="border-color:#ef4444;color:#ef4444;">🗑 전체 삭제</button>
     </div>
     <button class="btn btn-export" onclick="exportExcel()">⬇ 엑셀 다운로드</button>
   </div>
@@ -229,6 +230,14 @@ https://www.instagram.com/example3/"></textarea>
 
   function exportExcel() {
     window.location.href = '/api/export';
+  }
+
+  async function deleteAll() {
+    if (!confirm('저장된 인플루언서 데이터를 전체 삭제하겠습니까?')) return;
+    await fetch('/api/data', { method: 'DELETE' });
+    await loadData();
+    showStatus('🗑 전체 삭제 완료', 'success');
+    setTimeout(() => hideStatus(), 3000);
   }
 
   function showStatus(msg, type) {
