@@ -2,9 +2,11 @@ const express = require('express');
 const { chromium } = require('playwright');
 const fs = require('fs');
 const XLSX = require('xlsx');
+const cors = require('cors');
 require('dotenv').config();
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 app.use(express.static('public'));
 
@@ -228,7 +230,8 @@ app.post('/api/reset-session', (req, res) => {
   res.json({ success: true, message: '세션 초기화 완료. 다음 분석 시 다시 로그인해주세요.' });
 });
 
-app.listen(3000, () => {
-  console.log('✅ 서버 시작됨!');
-  console.log('👉 브라우저에서 http://localhost:3000 접속하세요');
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`✅ 서버 시작됨! PORT: ${PORT}`);
+  console.log(`👉 브라우저에서 http://localhost:${PORT} 접속하세요`);
 });
