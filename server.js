@@ -29,9 +29,10 @@ async function scrapeInstagram(url) {
 
   const isFirstTime = !fs.existsSync(SESSION_DIR);
 
+  const isHeadless = process.env.NODE_ENV === 'production' || process.env.HEADLESS === 'true';
   const context = await chromium.launchPersistentContext(SESSION_DIR, {
-    headless: false,
-    slowMo: 300,
+    headless: isHeadless,
+    slowMo: isHeadless ? 0 : 300,
     args: [
       '--no-sandbox',
       '--disable-blink-features=AutomationControlled',
