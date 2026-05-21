@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://RENDER_URL_HERE/api/:path*"
+      "destination": "https://myfirstproject-niu5.onrender.com/api/:path*"
     }
   ]
 }
