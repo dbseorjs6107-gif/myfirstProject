@@ -107,7 +107,7 @@ ${metaData}
 {"username":"아이디","displayName":"표시명","followers":"팔로워수","email":"이메일 또는 null","bio":"소개글 또는 null","contentType":"메이크업/스킨케어/헤어/네일/라이프스타일/패션/혼합 중 하나","isReelsFocused":true,"isRecentlyActive":true,"confidence":"high/medium/low"}`;
 
   const response = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key=${GEMINI_API_KEY}`,
+    `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent?key=${GEMINI_API_KEY}`,
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
