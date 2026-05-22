@@ -64,7 +64,7 @@ async function scrapeInstagram(url) {
 
     if (page.url().includes('accounts/login')) {
       console.log('⚠️  로그인이 필요합니다. 브라우저에서 로그인해주세요...');
-      await page.waitForURL(url => !url.includes('accounts/login'), { timeout: 120000 });
+      await page.waitForURL(u => !u.toString().includes('accounts/login'), { timeout: 120000 });
       console.log('✅ 로그인 완료! 세션이 저장됩니다.');
       await page.waitForTimeout(3000);
       await page.goto(cleanUrl, { waitUntil: 'domcontentloaded', timeout: 30000 });
