@@ -2,3 +2,4 @@ node_modules/
 *.log
 instagram_session/
 .env
+queue.json

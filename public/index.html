@@ -11,7 +11,7 @@
   .header h1 { font-size: 20px; font-weight: 600; }
   .header span { font-size: 13px; opacity: 0.6; }
   .container { max-width: 1400px; margin: 0 auto; padding: 24px; }
-  .input-box { background: white; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+  .input-box { background: white; border-radius: 12px; padding: 20px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
   .input-box label { font-size: 13px; font-weight: 600; color: #555; display: block; margin-bottom: 8px; }
   .input-box textarea { width: 100%; height: 120px; padding: 12px 16px; border: 1.5px solid #e0e0e0; border-radius: 8px; font-size: 13px; outline: none; resize: vertical; line-height: 1.8; transition: border-color 0.2s; font-family: 'Segoe UI', sans-serif; }
   .input-box textarea:focus { border-color: #1a1a2e; }
@@ -24,8 +24,21 @@
   .btn-primary:disabled { background: #999; cursor: not-allowed; }
   .btn-export { background: #16a34a; color: white; }
   .btn-export:hover { background: #15803d; }
-  .btn-danger { background: none; border: 1px solid #e0e0e0; color: #999; font-size: 12px; padding: 8px 14px; }
+  .btn-danger { background: none; border: 1px solid #e0e0e0; color: #999; font-size: 12px; padding: 8px 14px; border-radius: 8px; cursor: pointer; }
   .btn-danger:hover { border-color: #ef4444; color: #ef4444; }
+
+  /* 큐 상태 박스 */
+  .queue-box { background: white; border-radius: 12px; padding: 16px 20px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); display: flex; align-items: center; justify-content: space-between; }
+  .queue-stats { display: flex; gap: 20px; align-items: center; }
+  .queue-stat { display: flex; flex-direction: column; align-items: center; }
+  .queue-stat-label { font-size: 11px; color: #999; }
+  .queue-stat-value { font-size: 18px; font-weight: 700; color: #1a1a2e; }
+  .queue-stat-value.active { color: #d97706; }
+  .queue-stat-value.done { color: #16a34a; }
+  .queue-stat-value.err { color: #dc2626; }
+  .queue-processing { font-size: 12px; color: #666; background: #fffbeb; border: 1px solid #fde68a; border-radius: 6px; padding: 6px 12px; max-width: 400px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .queue-processing.idle { background: #f1f5f9; border-color: #e2e8f0; color: #94a3b8; }
+
   .toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
   .toolbar-left { display: flex; align-items: center; gap: 12px; }
   .count { font-size: 13px; color: #666; }
@@ -33,9 +46,6 @@
   .status-msg.loading { background: #eff6ff; color: #1d4ed8; display: block; }
   .status-msg.error { background: #fef2f2; color: #dc2626; display: block; }
   .status-msg.success { background: #f0fdf4; color: #16a34a; display: block; }
-  .progress-bar { width: 100%; height: 4px; background: #e0e0e0; border-radius: 2px; margin-top: 8px; display: none; }
-  .progress-bar.show { display: block; }
-  .progress-fill { height: 100%; background: #1a1a2e; border-radius: 2px; transition: width 0.3s; }
   .table-wrap { background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); overflow: hidden; }
   table { width: 100%; border-collapse: collapse; font-size: 13px; }
   thead tr { background: #1a1a2e; color: white; }
@@ -43,26 +53,13 @@
   tbody tr { border-bottom: 1px solid #f0f0f0; transition: background 0.15s; }
   tbody tr:hover { background: #f9f9ff; }
   tbody td { padding: 11px 14px; vertical-align: middle; }
-  .tag { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
-  .tag-makeup { background: #fce7f3; color: #be185d; }
-  .tag-skincare { background: #d1fae5; color: #065f46; }
-  .tag-hair { background: #dbeafe; color: #1e40af; }
-  .tag-lifestyle { background: #fef3c7; color: #92400e; }
-  .tag-fashion { background: #ede9fe; color: #5b21b6; }
-  .tag-nail { background: #ffedd5; color: #9a3412; }
-  .tag-mixed { background: #f1f5f9; color: #475569; }
-  .url-cell { max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .url-cell { max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .url-cell a { color: #1a1a2e; text-decoration: none; }
   .url-cell a:hover { text-decoration: underline; }
-  .bio-cell { max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #666; }
   .del-btn { background: none; border: none; color: #ccc; cursor: pointer; font-size: 16px; padding: 4px 8px; border-radius: 4px; }
   .del-btn:hover { color: #ef4444; background: #fef2f2; }
   .empty { text-align: center; padding: 60px; color: #aaa; }
   .empty p { font-size: 15px; margin-top: 8px; }
-  .confidence-high { color: #16a34a; font-weight: 600; }
-  .confidence-medium { color: #d97706; font-weight: 600; }
-  .confidence-low { color: #dc2626; font-weight: 600; }
-  .analyzing-row td { background: #fffbeb; }
 </style>
 </head>
 <body>
@@ -73,6 +70,8 @@
 </div>
 
 <div class="container">
+
+  <!-- URL 입력 -->
   <div class="input-box">
     <label>Instagram URL 입력 (여러 개는 줄바꿈으로 구분)</label>
     <textarea id="urlInput" placeholder="https://www.instagram.com/example1/
@@ -80,15 +79,34 @@ https://www.instagram.com/example2/
 https://www.instagram.com/example3/"></textarea>
     <div class="input-row">
       <span class="url-count">감지된 URL: <span id="urlCountNum">0</span>개</span>
-      <button class="btn btn-primary" id="analyzeBtn" onclick="analyze()">▶ 분석 시작</button>
-    </div>
-    <div class="progress-bar" id="progressBar">
-      <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+      <button class="btn btn-primary" id="queueBtn" onclick="addToQueue()">📥 대기열에 추가</button>
     </div>
   </div>
 
+  <!-- 상태 메시지 -->
   <div id="statusMsg" class="status-msg"></div>
 
+  <!-- 큐 상태 -->
+  <div class="queue-box">
+    <div class="queue-stats">
+      <div class="queue-stat">
+        <span class="queue-stat-value active" id="qPending">0</span>
+        <span class="queue-stat-label">대기중</span>
+      </div>
+      <div class="queue-stat">
+        <span class="queue-stat-value done" id="qCompleted">0</span>
+        <span class="queue-stat-label">완료</span>
+      </div>
+      <div class="queue-stat">
+        <span class="queue-stat-value err" id="qErrors">0</span>
+        <span class="queue-stat-label">오류</span>
+      </div>
+      <div id="qProcessing" class="queue-processing idle">⏸ 대기 중</div>
+    </div>
+    <button class="btn-danger" onclick="clearQueue()">큐 초기화</button>
+  </div>
+
+  <!-- 툴바 -->
   <div class="toolbar">
     <div class="toolbar-left">
       <span class="count" id="countText">총 0개</span>
@@ -98,6 +116,7 @@ https://www.instagram.com/example3/"></textarea>
     <button class="btn btn-export" onclick="exportExcel()">⬇ 엑셀 다운로드</button>
   </div>
 
+  <!-- 결과 테이블 -->
   <div class="table-wrap">
     <table>
       <thead>
@@ -113,7 +132,7 @@ https://www.instagram.com/example3/"></textarea>
     </table>
     <div class="empty" id="emptyMsg">
       <div style="font-size:40px">🔍</div>
-      <p>Instagram URL을 입력하고 분석을 시작하세요</p>
+      <p>Instagram URL을 입력하고 대기열에 추가하세요</p>
     </div>
   </div>
 </div>
@@ -121,23 +140,16 @@ https://www.instagram.com/example3/"></textarea>
 <script>
   let allData = [];
 
-  const tagClass = {
-    '메이크업': 'tag-makeup', '스킨케어': 'tag-skincare', '헤어': 'tag-hair',
-    '라이프스타일': 'tag-lifestyle', '패션': 'tag-fashion', '네일': 'tag-nail', '혼합': 'tag-mixed'
-  };
-
   // URL 개수 실시간 감지
   document.getElementById('urlInput').addEventListener('input', function() {
-    const urls = parseUrls(this.value);
-    document.getElementById('urlCountNum').textContent = urls.length;
+    document.getElementById('urlCountNum').textContent = parseUrls(this.value).length;
   });
 
   function parseUrls(text) {
-    return text.split('\n')
-      .map(u => u.trim())
-      .filter(u => u.includes('instagram.com'));
+    return text.split('\n').map(u => u.trim()).filter(u => u.includes('instagram.com'));
   }
 
+  // ─── 데이터 로드 & 렌더 ───────────────────────────────────
   async function loadData() {
     const res = await fetch('/api/data');
     allData = await res.json();
@@ -155,7 +167,6 @@ https://www.instagram.com/example3/"></textarea>
       return;
     }
     empty.style.display = 'none';
-
     tbody.innerHTML = allData.map(d => `
       <tr>
         <td class="url-cell"><a href="${d.url}" target="_blank">${d.url}</a></td>
@@ -167,69 +178,80 @@ https://www.instagram.com/example3/"></textarea>
     `).join('');
   }
 
-  async function analyze() {
-    const text = document.getElementById('urlInput').value;
-    const urls = parseUrls(text);
+  // ─── 큐 상태 폴링 ─────────────────────────────────────────
+  async function refreshQueueStatus() {
+    try {
+      const res = await fetch('/api/queue/status');
+      const s = await res.json();
 
+      document.getElementById('qPending').textContent = s.pending;
+      document.getElementById('qCompleted').textContent = s.completed;
+      document.getElementById('qErrors').textContent = s.errors;
+
+      const proc = document.getElementById('qProcessing');
+      if (s.processing) {
+        proc.className = 'queue-processing';
+        proc.textContent = `⚙️ 처리중: ${s.processing}`;
+      } else if (s.pending > 0) {
+        proc.className = 'queue-processing';
+        proc.textContent = `⏳ 다음 처리 대기 중...`;
+      } else {
+        proc.className = 'queue-processing idle';
+        proc.textContent = '⏸ 대기 중';
+      }
+
+      // 완료 수가 늘었으면 테이블 갱신
+      if (s.completed !== allData.length) await loadData();
+    } catch (e) {
+      console.error('큐 상태 조회 실패:', e);
+    }
+  }
+
+  // 15초마다 큐 상태 갱신 (서버 슬립 방지 겸용)
+  setInterval(refreshQueueStatus, 15000);
+
+  // ─── 대기열에 추가 ────────────────────────────────────────
+  async function addToQueue() {
+    const urls = parseUrls(document.getElementById('urlInput').value);
     if (urls.length === 0) return showStatus('올바른 Instagram URL을 입력해주세요', 'error');
 
-    const btn = document.getElementById('analyzeBtn');
+    const btn = document.getElementById('queueBtn');
     btn.disabled = true;
 
-    const progressBar = document.getElementById('progressBar');
-    const progressFill = document.getElementById('progressFill');
-    progressBar.classList.add('show');
-    progressFill.style.width = '0%';
-
-    showStatus(`⏳ ${urls.length}개 URL 분석 중... 브라우저 창이 자동으로 열립니다. 로그인이 필요하면 로그인해주세요.`, 'loading');
-
     try {
-      const res = await fetch('/api/analyze', {
+      const res = await fetch('/api/queue', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ urls })
       });
       const result = await res.json();
 
-      progressFill.style.width = '100%';
-      await loadData();
-
-      const successCount = result.results?.length || 0;
-      const errorCount = result.errors?.length || 0;
-
-      if (errorCount > 0) {
-        const errorMsgs = result.errors.map(e => `${e.url}: ${e.error}`).join('\n');
-        showStatus(`✅ ${successCount}개 완료 / ❌ ${errorCount}개 실패\n${errorMsgs}`, errorCount > 0 && successCount === 0 ? 'error' : 'success');
-      } else {
-        showStatus(`✅ ${successCount}개 분석 완료!`, 'success');
-        document.getElementById('urlInput').value = '';
-        document.getElementById('urlCountNum').textContent = '0';
-        setTimeout(() => hideStatus(), 4000);
-      }
+      showStatus(`✅ ${result.added}개가 대기열에 추가됐습니다. 서버가 60초마다 1개씩 자동 처리합니다.`, 'success');
+      document.getElementById('urlInput').value = '';
+      document.getElementById('urlCountNum').textContent = '0';
+      await refreshQueueStatus();
+      setTimeout(() => hideStatus(), 5000);
     } catch (err) {
       showStatus('❌ 오류: ' + err.message, 'error');
     } finally {
       btn.disabled = false;
-      progressBar.classList.remove('show');
-      progressFill.style.width = '0%';
     }
   }
 
+  // ─── 큐 초기화 ────────────────────────────────────────────
+  async function clearQueue() {
+    if (!confirm('대기 중인 URL을 전부 취소하겠습니까?')) return;
+    await fetch('/api/queue', { method: 'DELETE' });
+    await refreshQueueStatus();
+    showStatus('🗑 큐가 초기화됐습니다.', 'success');
+    setTimeout(() => hideStatus(), 3000);
+  }
+
+  // ─── 기타 기능 ────────────────────────────────────────────
   async function deleteRow(username) {
     if (!confirm('삭제하겠습니까?')) return;
     await fetch('/api/data/' + username, { method: 'DELETE' });
     await loadData();
-  }
-
-  async function resetSession() {
-    if (!confirm('로그인 세션을 초기화하면 다음 분석 시 다시 로그인해야 합니다. 계속하겠습니까?')) return;
-    await fetch('/api/reset-session', { method: 'POST' });
-    showStatus('🔄 세션 초기화 완료. 다음 분석 시 Instagram 로그인이 필요합니다.', 'success');
-    setTimeout(() => hideStatus(), 4000);
-  }
-
-  function exportExcel() {
-    window.location.href = '/api/export';
   }
 
   async function deleteAll() {
@@ -239,6 +261,15 @@ https://www.instagram.com/example3/"></textarea>
     showStatus('🗑 전체 삭제 완료', 'success');
     setTimeout(() => hideStatus(), 3000);
   }
+
+  async function resetSession() {
+    if (!confirm('로그인 세션을 초기화하면 다음 분석 시 다시 로그인해야 합니다. 계속하겠습니까?')) return;
+    await fetch('/api/reset-session', { method: 'POST' });
+    showStatus('🔄 세션 초기화 완료. 다음 분석 시 Instagram 로그인이 필요합니다.', 'success');
+    setTimeout(() => hideStatus(), 4000);
+  }
+
+  function exportExcel() { window.location.href = '/api/export'; }
 
   function showStatus(msg, type) {
     const el = document.getElementById('statusMsg');
@@ -250,7 +281,9 @@ https://www.instagram.com/example3/"></textarea>
     document.getElementById('statusMsg').className = 'status-msg';
   }
 
+  // 초기 로드
   loadData();
+  refreshQueueStatus();
 </script>
 </body>
 </html>
