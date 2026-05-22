@@ -1,7 +1,7 @@
 const express = require('express');
 const { chromium } = require('playwright');
 const fs = require('fs');
-const XLSX = require('xlsx');
+const ExcelJS = require('exceljs');
 const cors = require('cors');
 require('dotenv').config();
 
@@ -185,41 +185,38 @@ app.post('/api/analyze', async (req, res) => {
   res.json({ success: true, results, errors });
 });
 
-app.get('/api/export', (req, res) => {
+app.get('/api/export', async (req, res) => {
   const data = loadData();
-  const rows = data.map(d => ({
-    '아이디': d.username || '',
-    '표시명': d.displayName || '',
-    '이메일': d.email || '',
-  }));
+  const wb = new ExcelJS.Workbook();
+  const ws = wb.addWorksheet('인플루언서 목록');
 
-  const wb = XLSX.utils.book_new();
-  const ws = XLSX.utils.json_to_sheet(rows);
-
-  // 열 너비 설정
-  ws['!cols'] = [
-    { wch: 20 },
-    { wch: 20 },
-    { wch: 30 },
+  // 헤더 설정
+  ws.columns = [
+    { header: '아이디', key: 'username', width: 20 },
+    { header: '표시명', key: 'displayName', width: 20 },
+    { header: '이메일', key: 'email', width: 30 },
   ];
 
-  // 모든 셀 폰트 사이즈 9pt 설정
-  const range = XLSX.utils.decode_range(ws['!ref']);
-  for (let R = range.s.r; R <= range.e.r; R++) {
-    for (let C = range.s.c; C <= range.e.c; C++) {
-      const cellRef = XLSX.utils.encode_cell({ r: R, c: C });
-      if (!ws[cellRef]) continue;
-      if (!ws[cellRef].s) ws[cellRef].s = {};
-      ws[cellRef].s.font = { sz: 9 };
-    }
-  }
+  // 데이터 추가
+  data.forEach(d => {
+    ws.addRow({
+      username: d.username || '',
+      displayName: d.displayName || '',
+      email: d.email || '',
+    });
+  });
 
-  XLSX.utils.book_append_sheet(wb, ws, '인플루언서 목록');
-  const buffer = XLSX.write(wb, { type: 'buffer', bookType: 'xlsx', cellStyles: true });
+  // 모든 셀 폰트 사이즈 9pt 적용
+  ws.eachRow(row => {
+    row.eachCell(cell => {
+      cell.font = { size: 9 };
+    });
+  });
 
   res.setHeader('Content-Disposition', 'attachment; filename=influencers.xlsx');
   res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-  res.send(buffer);
+  await wb.xlsx.write(res);
+  res.end();
 });
 
 app.delete('/api/data/:username', (req, res) => {
