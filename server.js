@@ -207,6 +207,7 @@ app.get('/api/queue/status', (req, res) => {
     processing: queue.processing,
     completed: data.length,
     errors: (queue.errors || []).length,
+    errorList: (queue.errors || []).slice(-5), // 최근 5개 오류 내역
   });
 });
 

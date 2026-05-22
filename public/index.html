@@ -105,6 +105,7 @@ https://www.instagram.com/example3/"></textarea>
     </div>
     <button class="btn-danger" onclick="clearQueue()">큐 초기화</button>
   </div>
+  <div id="qErrorList" style="display:none; margin-top:8px; padding:10px 16px; background:#fef2f2; border-radius:8px; font-size:12px; color:#dc2626;"></div>
 
   <!-- 툴바 -->
   <div class="toolbar">
@@ -198,6 +199,17 @@ https://www.instagram.com/example3/"></textarea>
       } else {
         proc.className = 'queue-processing idle';
         proc.textContent = '⏸ 대기 중';
+      }
+
+      // 오류 내역 표시
+      const errBox = document.getElementById('qErrorList');
+      if (s.errorList && s.errorList.length > 0) {
+        errBox.style.display = 'block';
+        errBox.innerHTML = '❌ 최근 오류:<br>' + s.errorList.map(e =>
+          `<div style="margin-top:4px">• ${e.url}<br>&nbsp;&nbsp;→ ${e.error}</div>`
+        ).join('');
+      } else {
+        errBox.style.display = 'none';
       }
 
       // 완료 수가 늘었으면 테이블 갱신
